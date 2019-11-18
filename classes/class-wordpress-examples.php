@@ -41,6 +41,11 @@ if ( ! class_exists( 'WordPress_Examples' ) ) :
 		 * Constructor
 		 */
 		public function __construct() {
+
+			// WordPress Common APIs.
+			// 
+			// Dashboard Widgets.
+			require_once WORDPRESS_EXAMPLES_DIR . 'classes/common-apis/dashboard-widgets/class-wordpress-examples-dashboard-widgets.php';
 		}
 
 	}
