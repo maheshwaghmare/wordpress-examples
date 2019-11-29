@@ -46,6 +46,9 @@ if ( ! class_exists( 'WordPress_Examples' ) ) :
 			// 
 			// Dashboard Widgets.
 			require_once WORDPRESS_EXAMPLES_DIR . 'classes/common-apis/dashboard-widgets/class-wordpress-examples-dashboard-widgets.php';
+
+			// WP CLI
+			require_once WORDPRESS_EXAMPLES_DIR . 'classes/wp-cli/class-wordpress-examples-wp-cli.php';
 		}
 
 	}
