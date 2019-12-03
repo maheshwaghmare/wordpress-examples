@@ -39,7 +39,7 @@ if ( ! class_exists( 'WordPress_Examples_WP_CLI' ) && class_exists( 'WP_CLI_Comm
 			WP_CLI::error( 'Testing the Error!' );
 			
 			// This not print due to above error message.
-			WP_CLI::line( 'World' );
+			WP_CLI::success( 'World' );
 		}
 
 		/**
@@ -268,6 +268,200 @@ if ( ! class_exists( 'WordPress_Examples_WP_CLI' ) && class_exists( 'WP_CLI_Comm
 			$formatter      = new \WP_CLI\Formatter( $assoc_args, $display_fields );
 			$formatter->display_items( $query->posts );
 		}
+
+		/**
+		 * Using make_progress_bar()
+		 *
+		 * ## EXAMPLES
+		 *
+		 *     $ wp examples make_progress_bar
+		 *
+		 * @since 1.0.0
+		 * @param  array $args        Arguments.
+		 * @param  array $assoc_args Associated Arguments.
+		 */
+		public function make_progress_bar( $args, $assoc_args ) {
+			$progress = \WP_CLI\Utils\make_progress_bar( 'Process Bar', '100' );
+
+			// Wait for 1 second.
+			sleep(1);
+			$progress->tick();
+
+			// Wait for 3 second.
+			sleep(3);
+			$progress->tick();
+
+			// Wait for 2 second.
+			sleep(2);
+			$progress->tick();
+
+			// Wait for 5 second.
+			sleep(5);
+			$progress->tick();
+
+			// Wait for 3 second.
+			sleep(3);
+			$progress->tick();
+
+			// Wait for 1 second.
+			sleep(1);
+			$progress->tick();
+
+			$progress->finish();
+		}
+
+		/**
+		 * Using WP_CLI::debug()
+		 *
+		 * ## EXAMPLES
+		 *
+		 *     $ wp examples debug
+		 *
+		 * @since 1.0.0
+		 * @param  array $args        Arguments.
+		 * @param  array $assoc_args Associated Arguments.
+		 */
+		public function debug( $args, $assoc_args ) {
+			WP_CLI::debug( 'Message Without Any Group' );
+
+			WP_CLI::debug( 'First Message from `group1` Group', 'group1' );
+			WP_CLI::debug( 'Second Message from `group1` Group', 'group1' );
+
+			WP_CLI::debug( 'First Message from `group2` Group', 'group2' );
+			WP_CLI::debug( 'Second Message from `group2` Group', 'group2' );
+		}
+
+		/**
+		 * Using WP_CLI::write_csv()
+		 *
+		 * ## EXAMPLES
+		 *
+		 *     $ wp examples write_csv
+		 *
+		 * @since 1.0.0
+		 * @param  array $args        Arguments.
+		 * @param  array $assoc_args Associated Arguments.
+		 */
+		public function write_csv( $args, $assoc_args ) {
+			$file_resource = fopen( 'users.csv', 'w' );
+
+			$data = array(
+				array(
+					'id'    => '1',
+					'first' => 'Mahesh',
+					'last'  => 'Waghmare',
+				),
+				array(
+					'id'    => '2',
+					'first' => 'Swapnil',
+					'last'  => 'Dhanrale',
+				),
+				array(
+					'id'    => '3',
+					'first' => 'Madhav',
+					'last'  => 'Shikhare',
+				),
+			);
+
+			\WP_CLI\utils\write_csv( $file_resource, $data, array( 'id', 'first', 'last' ) );
+		}
+
+		/**
+		 * Using WP_CLI::report_batch_operation_results()
+		 *
+		 * @see  https://make.wordpress.org/cli/handbook/internal-api/wp-cli-utils-report-batch-operation-results/
+		 *
+		 * ## EXAMPLES
+		 *
+		 *     $ wp examples report_batch_operation_results
+		 *
+		 * @since 1.0.0
+		 * @param  array $args        Arguments.
+		 * @param  array $assoc_args Associated Arguments.
+		 */
+		public function report_batch_operation_results( $args, $assoc_args ) {
+			$count = 100;
+			$successes = 0;
+			$errors    = 0;
+			$skips     = 0;
+			for ($i=1; $i <= $count; $i++) { 
+					// $successes += 1;
+				if( $i <= 0 && $i >= 25 ) {
+					$successes += 1;
+				}
+				if(  $i >= 26 && $i <= 50 ) {
+					$errors += 1;
+				}
+				if(  $i >= 51 && $i <= 100 ) {
+					$skips += 1;
+				}
+			}
+
+			\WP_CLI\Utils\report_batch_operation_results( 'noun', 'verb', $count, $successes, $errors, $skips );
+		}
+
+		/**
+		 * Using WP_CLI::parse_str_to_argv()
+		 *
+		 * ## EXAMPLES
+		 *
+		 *     $ wp examples parse_str_to_argv
+		 *
+		 * @since 1.0.0
+		 * @param  array $args        Arguments.
+		 * @param  array $assoc_args Associated Arguments.
+		 */
+		public function parse_str_to_argv( $args, $assoc_args ) {
+			$argv = \WP_CLI\Utils\parse_str_to_argv( 'wp plugin list' );
+
+			WP_CLI::error( print_r( $argv ) );
+		}
+
+		/**
+		 * Using WP_CLI::parse_ssh_url()
+		 *
+		 * ## EXAMPLES
+		 *
+		 *     $ wp examples parse_ssh_url
+		 *
+		 * @since 1.0.0
+		 * @param  array $args        Arguments.
+		 * @param  array $assoc_args Associated Arguments.
+		 */
+		public function parse_ssh_url( $args, $assoc_args ) {
+			$argv = \WP_CLI\Utils\parse_ssh_url( 'https://make.wordpress.org/cli/handbook/internal-api/wp-cli-utils-parse-ssh-url/' );
+			WP_CLI::line( print_r( $argv ) );
+
+			$argv = \WP_CLI\Utils\parse_ssh_url( 'www-data@ec2-34-222-239-215.us-west-2.compute.amazonaws.com' );
+			WP_CLI::line( print_r( $argv ) );
+		}
+
+		/**
+		 * Using WP_CLI::do_hook()
+		 *
+		 * ## EXAMPLES
+		 *
+		 *     $ wp examples do_hook
+		 *
+		 * @since 1.0.0
+		 * @param  array $args        Arguments.
+		 * @param  array $assoc_args Associated Arguments.
+		 */
+		public function do_hook( $args, $assoc_args ) {
+
+			// Before hook.
+			WP_CLI::do_hook('wordpress-examples-before-hook');
+
+			WP_CLI::line('Started command `do_hook`.');
+
+			// Inside Hook.
+			WP_CLI::do_hook('wordpress-examples-inside-hook');
+
+			WP_CLI::line('Started command `do_hook`.');
+
+			// After Hook.
+			WP_CLI::do_hook('wordpress-examples-after-hook');
+		}
 	}
 
 	/**
@@ -276,3 +470,25 @@ if ( ! class_exists( 'WordPress_Examples_WP_CLI' ) && class_exists( 'WP_CLI_Comm
 	WP_CLI::add_command( 'examples', 'WordPress_Examples_WP_CLI' );
 
 endif;
+
+
+WP_CLI::add_hook(
+	'wordpress-examples-before-hook',
+	function () {
+		WP_CLI::line( 'WordPress Examples Before Hook' );
+	}
+);
+
+WP_CLI::add_hook(
+	'wordpress-examples-inside-hook',
+	function () {
+		WP_CLI::line( 'WordPress Examples Inside Hook' );
+	}
+);
+
+WP_CLI::add_hook(
+	'wordpress-examples-after-hook',
+	function () {
+		WP_CLI::line( 'WordPress Examples After Hook' );
+	}
+);
