@@ -472,23 +472,25 @@ if ( ! class_exists( 'WordPress_Examples_WP_CLI' ) && class_exists( 'WP_CLI_Comm
 endif;
 
 
-WP_CLI::add_hook(
-	'wordpress-examples-before-hook',
-	function () {
-		WP_CLI::line( 'WordPress Examples Before Hook' );
-	}
-);
+if( defined( 'WP_CLI' ) ) {
+	WP_CLI::add_hook(
+		'wordpress-examples-before-hook',
+		function () {
+			WP_CLI::line( 'WordPress Examples Before Hook' );
+		}
+	);
 
-WP_CLI::add_hook(
-	'wordpress-examples-inside-hook',
-	function () {
-		WP_CLI::line( 'WordPress Examples Inside Hook' );
-	}
-);
+	WP_CLI::add_hook(
+		'wordpress-examples-inside-hook',
+		function () {
+			WP_CLI::line( 'WordPress Examples Inside Hook' );
+		}
+	);
 
-WP_CLI::add_hook(
-	'wordpress-examples-after-hook',
-	function () {
-		WP_CLI::line( 'WordPress Examples After Hook' );
-	}
-);
+	WP_CLI::add_hook(
+		'wordpress-examples-after-hook',
+		function () {
+			WP_CLI::line( 'WordPress Examples After Hook' );
+		}
+	);
+}
