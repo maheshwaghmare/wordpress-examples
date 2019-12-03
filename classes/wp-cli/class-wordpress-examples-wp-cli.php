@@ -462,6 +462,61 @@ if ( ! class_exists( 'WordPress_Examples_WP_CLI' ) && class_exists( 'WP_CLI_Comm
 			// After Hook.
 			WP_CLI::do_hook('wordpress-examples-after-hook');
 		}
+
+		/**
+		 * Using WP_CLI::WP_CLI::format_items()
+		 *
+		 * ## EXAMPLES
+		 *
+		 *     $ wp examples format_items
+		 *
+		 * @since 1.0.0
+		 * @param  array $args        Arguments.
+		 * @param  array $assoc_args Associated Arguments.
+		 */
+		function another() {
+			$args = func_get_args();
+
+			WP_CLI::error( print_r( $args ) );
+		}
+
+		public function format_items( $args, $assoc_args ) {
+			$this->another();
+
+
+			$items = array(
+			    array(
+			        'key'   => 'foo',
+			        'value'  => 'bar',
+			    )
+			);
+
+
+			WP_CLI::line( 'table' );
+			\WP_CLI\Utils\format_items( 'table', $items, array( 'key', 'value' ) );
+
+
+			WP_CLI::line( 'json' );
+			\WP_CLI\Utils\format_items( 'json', $items, array( 'key', 'value' ) );
+
+
+			WP_CLI::line( 'csv' );
+			\WP_CLI\Utils\format_items( 'csv', $items, array( 'key', 'value' ) );
+
+
+			WP_CLI::line( 'yaml' );
+			\WP_CLI\Utils\format_items( 'yaml', $items, array( 'key', 'value' ) );
+
+
+			WP_CLI::line( 'ids' );
+
+			WP_CLI::line( print_r( \WP_CLI\Utils\format_items( 'ids', $items, array( 'key', 'value' ) ) ) );
+
+			WP_CLI::line( 'count' );
+			\WP_CLI\Utils\format_items( 'count', $items, array( 'key', 'value' ) );
+
+
+		}
 	}
 
 	/**
